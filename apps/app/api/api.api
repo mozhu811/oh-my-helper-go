@@ -1,0 +1,199 @@
+type Request {
+	Name string `path:"name,options=you|me"`
+}
+
+type Response {
+	Message string `json:"message"`
+}
+
+type (
+	QrCodeResponse {
+		QrCodeUrl string `json:"qrCodeUrl"`
+		QrCodeImg string `json:"qrCodeImg"`
+		QrCodeKey string `json:"qrCodeKey"`
+	}
+
+	BiliLoginRequest {
+		QrCodeKey string `form:"qrCodeKey"`
+	}
+
+	BiliLoginResponse {
+		Code       int    `json:"code"`
+		Dedeuserid string `json:"dedeuserid"`
+		Sessdata   string `json:"sessdata"`
+		BiliJct    string `json:"biliJct"`
+	}
+)
+
+type (
+	BiliUserRequest {
+		Dedeuserid string `header:"dedeuserid"`
+		Sessdata   string `header:"sessdata"`
+		BiliJct    string `header:"biliJct"`
+	}
+	BiliUserResponse {
+		Id            int64   `json:"id"`
+		Dedeuserid    string  `json:"dedeuserid"`
+		Username      string  `json:"username"`
+		Coins         float64 `json:"coins"`
+		CurrentExp    int64   `json:"currentExp"`
+		NextExp       int64   `json:"nextExp"`
+		IsLogin       bool    `json:"isLogin"`
+		UpgradeDays   int64   `json:"upgradeDays"`
+		Level         int64   `json:"level"`
+		Medals        string  `json:"medals"`
+		VipStatus     int64   `json:"vipStatus"`
+		VipType       int64   `json:"vipType"`
+		VipLabelTheme string  `json:"vipLabelTheme"`
+		Sign          string  `json:"sign"`
+		LastRunTime   int64   `json:"lastRunTime"`
+		CreateTime    int64   `json:"createTime"`
+	}
+
+	BiliUserListRequest {
+		Page int64 `form:"page"`
+		Size int64 `form:"size"`
+	}
+
+	BiliUserListResponse {
+		Total int64              `json:"total"`
+		Users []BiliUserResponse `json:"users"`
+	}
+)
+@server(
+	group: bili
+)
+service api-api {
+	@doc "请求B站二维码"
+	@handler BiliQrCodeHandler
+	get /bili/qrCode returns (QrCodeResponse)
+	
+	@doc "二维码登陆"
+	@handler BiliQrCodeLoginHandler
+	get /bili/login (BiliLoginRequest) returns (BiliLoginResponse)
+	
+	@doc "获取用户信息"
+	@handler BiliUserInfoHandler
+	get /bili/user (BiliUserRequest) returns (BiliUserResponse)
+	
+	@doc "分页查询B站用户"
+	@handler BiliUserHandler
+	get /bili/users (BiliUserListRequest) returns (BiliUserListResponse)
+}
+
+type (
+	BiliTaskConfigRequest {
+		Dedeuserid string `header:"dedeuserid"`
+		Sessdata   string `header:"sessdata"`
+		BiliJct    string `header:"biliJct"`
+	}
+
+	BiliTaskConfigResponse {
+		Id                 int64  `json:"id"`
+		DonateCoins        int64  `json:"donateCoins"`
+		ReserveCoins       int64  `json:"reserveCoins"`
+		AutoCharge         bool   `json:"autoCharge"`
+		DonateGift         bool   `json:"donateGift"`
+		AutoChargeTarget   string `json:"autoChargeTarget"`
+		DonateGiftTarget   string `json:"donateGiftTarget"`
+		DevicePlatform     string `json:"devicePlatform"`
+		DonateCoinStrategy int64  `json:"donateCoinStrategy"`
+		UserAgent          string `json:"userAgent"`
+		SkipTask           bool   `json:"skipTask"`
+		FollowDeveloper    bool   `json:"followDeveloper"`
+		CreateTime         int64  `json:"createTime"`
+		UpdateTime         int64  `json:"updateTime"`
+	}
+
+	BiliTaskConfigAddRequest {
+		Dedeuserid         string `header:"dedeuserid"`
+		Sessdata           string `header:"sessdata"`
+		BiliJct            string `header:"biliJct"`
+		DonateCoins        int64  `json:"donateCoins"`
+		ReserveCoins       int64  `json:"reserveCoins"`
+		AutoCharge         bool   `json:"autoCharge"`
+		DonateGift         bool   `json:"donateGift"`
+		AutoChargeTarget   string `json:"autoChargeTarget"`
+		DonateGiftTarget   string `json:"donateGiftTarget"`
+		DevicePlatform     string `json:"devicePlatform"`
+		DonateCoinStrategy int64  `json:"donateCoinStrategy"`
+		UserAgent          string `json:"userAgent"`
+		SkipTask           bool   `json:"skipTask"`
+		FollowDeveloper    bool   `json:"followDeveloper"`
+	}
+
+	BiliTaskConfigEditRequest {
+		Id                 int64  `json:"id"`
+		Dedeuserid         string `header:"dedeuserid"`
+		Sessdata           string `header:"sessdata"`
+		BiliJct            string `header:"biliJct"`
+		DonateCoins        int64  `json:"donateCoins"`
+		ReserveCoins       int64  `json:"reserveCoins"`
+		AutoCharge         bool   `json:"autoCharge"`
+		DonateGift         bool   `json:"donateGift"`
+		AutoChargeTarget   string `json:"autoChargeTarget"`
+		DonateGiftTarget   string `json:"donateGiftTarget"`
+		DevicePlatform     string `json:"devicePlatform"`
+		DonateCoinStrategy int64  `json:"donateCoinStrategy"`
+		UserAgent          string `json:"userAgent"`
+		SkipTask           bool   `json:"skipTask"`
+		FollowDeveloper    bool   `json:"followDeveloper"`
+	}
+)
+
+@server(
+	group: task
+)
+service api-api {
+	@doc "查询B站任务配置"
+	@handler BiliTaskConfigHandler
+	get /tasks/bili (BiliTaskConfigRequest) returns (BiliTaskConfigResponse)
+	
+	@doc "新增B站任务配置"
+	@handler BiliTaskConfigAddHandler
+	post /tasks/bili (BiliTaskConfigAddRequest) returns (BiliTaskConfigResponse)
+	
+	@doc "更改B站任务配置"
+	@handler BiliTaskConfigEditHandler
+	put /tasks/bili/:cid (BiliTaskConfigEditRequest) returns (BiliTaskConfigResponse)
+}
+
+type (
+	PushConfigRequest {
+		Dedeuserid string `header:"dedeuserid"`
+	}
+
+	PushConfigResponse {
+		Id     int64                  `json:"id"`
+		UserId string                 `json:"userId"`
+		Config map[string]interface{} `json:"config"`
+	}
+
+	PushConfigAddRequest {
+		UserId string `json:"userId"`
+		Config string `json:"config"`
+	}
+
+	PushConfigEditRequest {
+		Id     int64                  `path:"cid"`
+		UserId string                 `json:"userId"`
+		Config map[string]interface{} `json:"config"`
+	}
+)
+
+@server(
+	group: push
+)
+service api-api {
+	@doc "查询推送配置"
+	@handler PushConfigHandler
+	get /push (PushConfigRequest) returns (PushConfigResponse)
+	
+	@doc "新增推送配置"
+	@handler PushConfigAddHandler
+	post /push (PushConfigAddRequest) returns (PushConfigResponse)
+	
+	@doc "更改推送配置"
+	@handler PushConfigEditHandler
+	put /push/:cid (PushConfigEditRequest) returns (PushConfigResponse)
+}

@@ -1,0 +1,7 @@
+Name: task-config.rpc
+ListenOn: 0.0.0.0:10011
+Etcd:
+  Hosts:
+  - 127.0.0.1:2379
+  Key: task-config.rpc
+DataSource: root:user@password@tcp(127.0.0.1:3308)/oh_my_helper?parseTime=true

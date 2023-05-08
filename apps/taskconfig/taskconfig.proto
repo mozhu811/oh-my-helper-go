@@ -1,0 +1,80 @@
+syntax = "proto3";
+
+package taskconfig;
+option go_package = "./taskconfig";
+
+message Request {
+  string ping = 1;
+}
+
+message Response {
+  string pong = 1;
+}
+
+message BiliConfigRequest {
+  string dedeuserid = 1;
+}
+
+message BiliConfigResponse {
+  int64 id = 1;
+  string dedeuserid = 2;
+  string sessdata = 3;
+  string biliJct = 4;
+  int64 donateCoins = 5;
+  int64 reserveCoins = 6;
+  bool autoCharge = 7;
+  bool donateGift = 8;
+  string autoChargeTarget = 9;
+  string donateGiftTarget = 10;
+  string devicePlatform = 11;
+  int64 donateCoinStrategy = 12;
+  string userAgent = 13;
+  bool skipTask = 14;
+  bool followDeveloper = 15;
+  int64 createTime = 16;
+  int64 updateTime = 17;
+}
+
+message BiliConfigEditRequest {
+  int64 id = 1;
+  string dedeuserid = 2;
+  string sessdata = 3;
+  string biliJct = 4;
+  int64 donateCoins = 5;
+  int64 reserveCoins = 6;
+  bool autoCharge = 7;
+  bool donateGift = 8;
+  string autoChargeTarget = 9;
+  string donateGiftTarget = 10;
+  string devicePlatform = 11;
+  int64 donateCoinStrategy = 12;
+  string userAgent = 13;
+  bool skipTask = 14;
+  bool followDeveloper = 15;
+}
+
+message BiliConfigAddRequest {
+  string dedeuserid = 2;
+  string sessdata = 3;
+  string biliJct = 4;
+  int64 donateCoins = 5;
+  int64 reserveCoins = 6;
+  bool autoCharge = 7;
+  bool donateGift = 8;
+  string autoChargeTarget = 9;
+  string donateGiftTarget = 10;
+  string devicePlatform = 11;
+  int64 donateCoinStrategy = 12;
+  string userAgent = 13;
+  bool skipTask = 14;
+  bool followDeveloper = 15;
+}
+service TaskConfig {
+  rpc Ping(Request) returns(Response);
+
+  rpc GetBiliConfig(BiliConfigRequest) returns(BiliConfigResponse);
+
+  rpc EditBiliConfig(BiliConfigEditRequest) returns(BiliConfigResponse);
+
+  rpc AddBiliConfig(BiliConfigAddRequest) returns(BiliConfigResponse);
+}

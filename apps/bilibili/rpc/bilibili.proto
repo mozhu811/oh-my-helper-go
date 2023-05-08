@@ -1,0 +1,68 @@
+syntax = "proto3";
+
+package bilibili;
+option go_package = "./bilibili";
+
+message QrCodeRequest {
+}
+
+message QrCodeResponse {
+  string QrCodeUrl = 1;
+  string QrCodeImg = 2;
+  string QrCodeKey = 3;
+}
+
+message BiliLoginRequest {
+  string QrCodeKey = 1;
+}
+
+message BiliLoginResponse{
+  uint32 Code = 1;
+  string Dedeuserid = 2;
+  string Sessdata = 3;
+  string BiliJct = 4;
+}
+
+message BiliUserRequest {
+  string Dedeuserid = 1;
+  string Sessdata = 2;
+  string BiliJct = 3;
+}
+message BiliUserResponse {
+  int64 Id = 1;
+  string Dedeuserid = 2;
+  string Username = 3;
+  double Coins = 4;
+  int64 Level = 5;
+  int64 CurrentExp = 6;
+  int64 NextExp = 7;
+  int64 UpgradeDays = 8;
+  string Medals = 9;
+  int64 VipStatus = 10;
+  int64 VipType = 11;
+  string VipLabelTheme = 12;
+  string Sign = 13;
+  bool IsLogin = 14;
+  int64 LastRunTime = 15;
+  int64 CreateTime = 16;
+}
+
+message BiliUserListRequest {
+  int64 Page = 1;
+  int64 Size = 2;
+}
+
+message BiliUserListResponse {
+  int64 Total = 1;
+  repeated BiliUserResponse BiliUsers = 2;
+}
+
+service Bilibili {
+  rpc GetLoginQrCode(QrCodeRequest) returns(QrCodeResponse);
+
+  rpc Login(BiliLoginRequest) returns(BiliLoginResponse);
+
+  rpc User(BiliUserRequest) returns(BiliUserResponse);
+
+  rpc Users(BiliUserListRequest) returns(BiliUserListResponse);
+}

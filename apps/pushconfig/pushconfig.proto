@@ -1,0 +1,45 @@
+syntax = "proto3";
+
+package pushconfig;
+option go_package="./pushconfig";
+
+message Request {
+  string ping = 1;
+}
+
+message Response {
+  string pong = 1;
+}
+
+message PushConfigRequest {
+  string dedeuserid = 1;
+}
+
+message PushConfigResponse {
+  int64 Id = 1;
+  string UserId = 2;
+  string Config = 3;
+  int64 CreateTime = 4;
+  int64 UpdateTime = 5;
+}
+
+message PushConfigAddRequest {
+  string UserId = 1;
+  string Config = 2;
+}
+
+message PushConfigEditRequest{
+  int64 Id = 1;
+  string UserId = 2;
+  string Config = 3;
+}
+
+service PushConfig {
+  rpc Ping(Request) returns(Response);
+
+  rpc GetPushConfig(PushConfigRequest) returns (PushConfigResponse);
+
+  rpc AddPushConfig(PushConfigAddRequest) returns (PushConfigResponse);
+
+  rpc EditPushConfig(PushConfigEditRequest) returns (PushConfigResponse);
+}

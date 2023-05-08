@@ -1,0 +1,23 @@
+Name: api-api
+Host: 0.0.0.0
+Port: 9999
+
+JwtAuth:
+  AccessSecret: your-access-secret
+  AccessExpire: 86400
+
+BiliRPC:
+  Etcd:
+    Hosts:
+      - 127.0.0.1:2379
+    Key: bili.rpc
+TaskConfigRPC:
+  Etcd:
+    Hosts:
+      - 127.0.0.1:2379
+    Key: task-config.rpc
+PushConfigRPC:
+  Etcd:
+    Hosts:
+      - 127.0.0.1:2379
+    Key: push-config.rpc
